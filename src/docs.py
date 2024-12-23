@@ -1,5 +1,6 @@
 import os
 import io
+from typing import Dict
 import yaml
 
 import google.auth
@@ -10,10 +11,6 @@ from googleapiclient.errors import HttpError
 
 # If modifying this, delete the file token.json to get new permissions
 SCOPES = ['https://www.googleapis.com/auth/documents.readonly']
-
-# load config
-with open("config.yaml", "r") as f:
-    CONFIG = yaml.safe_load(f)
 
 
 def authenticate_google_docs():
@@ -57,21 +54,32 @@ def count_words_in_document(document):
     
     return word_count
 
-def main():
+def get_word_counts(config: Dict):
     # Authenticate and get the service
     service = authenticate_google_docs()
     if service is None:
         return
 
-    for document in CONFIG["docs"]:
+    results = {}
+
+    for document in config["docs"]:
         # Fetch the document content
         document = get_document_content(service, document["id"])
         if document:
             # Count the words
             word_count = count_words_in_document(document)
+            results[document["title"]] = word_count
             print(f"{document["title"]} word count: {word_count}")
         else:
             print(f"Document {document["title"]} not found.")
 
+    return results
+
 if __name__ == '__main__':
-    main()
+
+    # load config
+    with open("config.yaml", "r") as f:
+        config = yaml.safe_load(f)
+
+    # get word counts
+    get_word_counts(config)

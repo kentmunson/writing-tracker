@@ -1,12 +1,18 @@
 """
-A sample Hello World server.
+Offers Google Doc Analysis
 """
 import os
+import yaml
 
 from flask import Flask, render_template
 
+from src.docs import get_word_counts
+
 # pylint: disable=C0103
 app = Flask(__name__)
+
+with open("config.yaml", "r") as f:
+    CONFIG = yaml.safe_load(f)
 
 
 @app.route('/')
@@ -22,6 +28,12 @@ def hello():
         message=message,
         Service=service,
         Revision=revision)
+
+
+@app.route("/counts")
+def word_counts():
+    return get_word_counts(config=CONFIG)
+
 
 if __name__ == '__main__':
     server_port = os.environ.get('PORT', '8080')
