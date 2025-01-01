@@ -1,6 +1,6 @@
 ---
 sa_email: example@project-12345.iam.gserviceaccount.com
 
-docs:
+documents:
   - title: Heartfelt Letter
-    id: 1n7McF3ZbNcR5egNbLZHZ9jodUpkDCUKx-gASWTd40RE
+    google_doc_id: 1n7McF3ZbNcR5egNbLZHZ9jodUpkDCUKx-gASWTd40RE
